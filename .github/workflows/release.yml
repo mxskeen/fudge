@@ -15,6 +15,10 @@ jobs:
       - run: cargo build --release -p fudge
       - name: Package
         run: packaging/build-release.sh "${GITHUB_REF_NAME#v}"
+      - name: Build AppImage
+        run: |
+          sudo apt-get install -y libfuse2t64 file patchelf desktop-file-utils
+          packaging/build-appimage.sh "${GITHUB_REF_NAME#v}"
       - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}

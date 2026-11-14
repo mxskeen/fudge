@@ -11,7 +11,7 @@ const GH = 'https://github.com/mxskeen/fudge';
     <p>Get the latest build from <a href={`${GH}/releases`}>GitHub Releases</a>. Linux x86_64 and macOS Apple Silicon.</p>
     <pre><code>sudo apt install ./fudge_*_amd64.deb
 fudge daemon</code></pre>
-    <p>On other distributions, unpack the tarball and run <code>./install.sh</code>, which installs to <code>~/.local</code>. It needs GTK 4 and libadwaita 1.5. Press Alt+Space to open it, and run <code>fudge install-autostart</code> to start it at login. On Wayland, bind <code>fudge toggle</code> to a key in your desktop settings.</p>
+    <p>On any distribution, download the AppImage, make it executable and run it with <code>daemon</code>; it bundles GTK 4 and libadwaita. Or unpack the tarball and run <code>./install.sh</code>, which installs to <code>~/.local</code>. It needs GTK 4 and libadwaita 1.5. Press Alt+Space to open it, and run <code>fudge install-autostart</code> to start it at login. On Wayland, bind <code>fudge toggle</code> to a key in your desktop settings.</p>
 
     <h2>macOS (untested)</h2>
     <p>An Apple Silicon build is on the releases page. It compiles and the query engine runs in CI, but the launcher window, hotkey and window switching have not been tried on a real Mac. It is not signed. Try it and <a href={`${GH}/issues`}>open an issue</a> with what you find.</p>
@@ -37,7 +37,7 @@ cargo build --release</code></pre>
 cargo build --release</code></pre>
 
     <h2>Packages</h2>
-    <p>Planned, none available yet: .deb, .rpm, AUR, Nix flake, AppImage, Homebrew cask and .dmg. Flatpak is deferred because its sandbox blocks ending processes and controlling windows.</p>
+    <p>Planned, none available yet: .deb, .rpm, AUR, Nix flake, Homebrew cask and .dmg. Flatpak is deferred because its sandbox blocks ending processes and controlling windows.</p>
 
     <h2>The hotkey</h2>
     <p>The default is Alt Space, and it is configurable.</p>

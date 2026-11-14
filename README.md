@@ -40,7 +40,7 @@ sudo apt install ./fudge_*_amd64.deb
 fudge daemon
 ```
 
-Other Linux distributions: unpack `fudge-*-linux-x86_64.tar.gz` and run `./install.sh`, which installs to `~/.local`. Press Alt+Space to open the launcher. Run `fudge install-autostart` to start it at login.
+Any Linux distribution: download `Fudge-*-x86_64.AppImage`, `chmod +x` it and run `./Fudge-*.AppImage daemon` (bundles GTK 4 and libadwaita). Or unpack `fudge-*-linux-x86_64.tar.gz` and run `./install.sh`, which installs to `~/.local`. Press Alt+Space to open the launcher. Run `fudge install-autostart` to start it at login.
 
 macOS (Apple Silicon, **untested**): the build compiles and the query engine runs in CI, but the launcher window, hotkey and window switching have not been tried on a real Mac. Try it and [open an issue](https://github.com/mxskeen/fudge/issues) with what you find.
 
