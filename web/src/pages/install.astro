@@ -2,10 +2,16 @@
 import Base from '../layouts/Base.astro';
 const GH = 'https://github.com/mxskeen/fudge';
 ---
-<Base title="Install: Fudge" description="Build Fudge from source on Linux or macOS. Packages are planned.">
+<Base title="Install: Fudge" description="Download Fudge for Linux, or build it from source.">
   <article class="page">
     <h1>Install</h1>
-    <p class="lead">Fudge is pre-alpha and has no downloads yet. Today you build it from source.</p>
+    <p class="lead">Fudge is pre-alpha. Download a build for Linux, or build it from source.</p>
+
+    <h2>Download</h2>
+    <p>Get the latest build from <a href={`${GH}/releases`}>GitHub Releases</a>. Linux x86_64 only for now.</p>
+    <pre><code>sudo apt install ./fudge_*_amd64.deb
+fudge daemon</code></pre>
+    <p>On other distributions, unpack the tarball and run <code>./install.sh</code>, which installs to <code>~/.local</code>. It needs GTK 4 and libadwaita 1.5. Press Alt+Space to open it, and run <code>fudge install-autostart</code> to start it at login. On Wayland, bind <code>fudge toggle</code> to a key in your desktop settings.</p>
 
     <h2>Build from source</h2>
     <p>On Debian or Ubuntu, install the build dependencies and compile.</p>
