@@ -4,7 +4,7 @@ A fast, private keyboard launcher for Linux and macOS. Press Alt+Space, type, ge
 
 Fudge is free and open source under MIT or Apache-2.0. It has no account, no telemetry and no licence key.
 
-**Status: pre-alpha.** The core works on Linux (X11, tested on GNOME). Wayland, macOS and packaging are not finished. There are no releases yet.
+**Status: pre-alpha.** The core works on Linux (X11, tested on GNOME). Wayland and macOS are not finished. Linux x86_64 builds are on the [Releases](https://github.com/mxskeen/fudge/releases) page.
 
 ## What it does
 
@@ -24,7 +24,19 @@ Fudge is free and open source under MIT or Apache-2.0. It has no account, no tel
 | `/yt lofi`, `/gh rust` | Web search, only when you ask |
 | `> htop` | Run a shell command |
 
-## Build
+## Install
+
+Download the latest build from [Releases](https://github.com/mxskeen/fudge/releases). Linux x86_64 only for now.
+
+```sh
+# Debian, Ubuntu and derivatives (24.04 or newer)
+sudo apt install ./fudge_*_amd64.deb
+fudge daemon
+```
+
+Other distributions: unpack `fudge-*-linux-x86_64.tar.gz` and run `./install.sh`, which installs to `~/.local`. Press Alt+Space to open the launcher. Run `fudge install-autostart` to start it at login.
+
+## Build from source
 
 Requires Rust 1.80 or newer.
 
