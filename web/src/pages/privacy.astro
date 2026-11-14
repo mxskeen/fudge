@@ -1,35 +1,32 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-<Base title="Privacy: Fudge Launcher" description="Every network call Fudge can make, and what stays on your machine.">
-  <div class="page"><div class="wrap narrow">
+<Base title="Privacy: Fudge" description="Every network call Fudge can make, and what stays on your machine.">
+  <article class="page">
     <h1>Privacy</h1>
-    <p>Fudge runs on your machine. Searches, math, unit conversion, time zones, file search, system commands and history never leave it. There is no account, no telemetry, no crash upload and no analytics.</p>
-    <p class="small">This page mirrors <code>PRIVACY.md</code> in the repository. Fudge is pre-alpha; this describes the intended behaviour.</p>
+    <p class="lead">Fudge runs on your machine. What you type, your history and your files never leave it. There is no account, no telemetry and no analytics.</p>
+    <p class="fine">This page mirrors <code>PRIVACY.md</code> in the repository. Fudge is pre-alpha, so this describes intended behaviour.</p>
 
-    <h2>Every network call Fudge can make</h2>
-    <div class="table-wrap" tabindex="0" role="region" aria-label="Network calls">
-      <table>
-        <thead><tr><th scope="col">Call</th><th scope="col">When</th><th scope="col">Sent</th><th scope="col">Off switch</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">Currency rates</th><td>You type a currency conversion, at most once an hour</td><td>Nothing about you: a plain request for today's USD rates to <code>open.er-api.com</code>, the same for every user. The amount and currencies stay on your machine.</td><td><code>network_features = false</code> in config, or Settings → Privacy</td></tr>
-          <tr><th scope="row">Update check</th><td>Only if you turn it on</td><td>Nothing: a plain request for the latest GitHub release</td><td>Off by default</td></tr>
-          <tr><th scope="row">Plugin registry</th><td>Only when you browse or install plugins</td><td>Nothing beyond the download request</td><td>Don't open the plugin browser</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="margin-top:1rem">Web searches you start with <code>/online</code>, <code>/yt</code>, <code>/gh</code> and so on open in your browser. Fudge never falls back to the web by itself.</p>
-    <p>Like any web request, these reveal your IP address to the server that answers them.</p>
+    <h2>Network calls</h2>
+    <p>These are all of them.</p>
+    <h3>Currency rates</h3>
+    <p>When you convert currency, at most once an hour. Fudge asks <code>open.er-api.com</code> for today's USD rates, the same request for every user. Your amounts and currencies stay local. Turn it off with <code>network_features = false</code> in the config, or in Settings.</p>
+    <h3>Update check</h3>
+    <p>Off by default. If you turn it on, Fudge asks GitHub for the latest release.</p>
+    <h3>Plugin registry</h3>
+    <p>Only when you browse or install a plugin.</p>
+    <p>Web searches you start with <code>/online</code>, <code>/yt</code> or <code>/gh</code> open in your browser. Fudge never searches the web on its own. Like any web request, these reveal your IP address to the server that answers.</p>
 
     <h2>What stays on your machine</h2>
-    <ul>
-      <li><strong>History:</strong> the results you run (title, what it does, how often, when), used to rank them. Stored in <code>$XDG_DATA_HOME/fudge/history.sqlite</code> (Linux) or <code>~/Library/Application Support/Fudge/</code> (macOS). Window switches and web searches are never stored. You can turn history off and clear it.</li>
-      <li><strong>File index:</strong> file names, sizes and dates for fast search. Never file contents. Content search goes through your OS's own indexer (Tracker/LocalSearch, Baloo, or Spotlight).</li>
-      <li><strong>Audit log:</strong> each <code>&gt;</code> shell command and each confirmed irreversible action (such as ending a process).</li>
-    </ul>
-    <p>Delete the folders above to remove everything.</p>
+    <h3>History</h3>
+    <p>The results you run, used to rank them. Stored in <code>$XDG_DATA_HOME/fudge/history.sqlite</code> on Linux and <code>~/Library/Application Support/Fudge/</code> on macOS. Window switches and web searches are never stored. You can turn history off and clear it.</p>
+    <h3>File index</h3>
+    <p>File names, sizes and dates. Never file contents. Content search uses your system's own indexer.</p>
+    <h3>Audit log</h3>
+    <p>Each <code>&gt;</code> shell command and each confirmed irreversible action, such as ending a process.</p>
+    <p>Delete those folders to remove everything.</p>
 
     <h2>This website</h2>
-    <p>The site makes no requests to any third party: no analytics, no web fonts, no CDN. The landing page shows a live counter of that. The demo's currency answers use fixed sample rates and do not touch the network.</p>
-  </div></div>
+    <p>No analytics, no web fonts, no CDN, and no request to any third party. The home page counts this live. The demo's currency answers use fixed sample rates and never touch the network.</p>
+  </article>
 </Base>

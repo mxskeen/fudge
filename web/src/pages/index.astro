@@ -4,113 +4,56 @@ import Demo from '../components/Demo.astro';
 import Counter from '../components/Counter.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const GH = 'https://github.com/mxskeen/fudge';
-const tries = [
-  ['12 * 18', 'math'], ['72 f to c', 'units'], ['12 usd to inr', 'currency (sample rates here)'], ['time tokyo', 'time zones'],
-  ['emoji shrug', 'emoji, copied on Enter'], ['#3b82f6', 'colour swatch'], ['kill spotify', 'end a process (simulated)'],
-  ['win firefox', 'switch window (simulated)'], ['/yt lofi', 'web search on request (simulated)'], ['> htop', 'shell command (simulated)'],
-];
-const rivals = [
-  ['Fudge', 'Yes (MIT or Apache-2.0)', 'Linux, macOS', 'Free', 'Pre-alpha, in development'],
-  ['Ulauncher', 'Yes', 'Linux', 'Free', 'Extensions in Python'],
-  ['Albert', 'Yes', 'Linux, macOS', 'Free', 'Plugin based'],
-  ['KRunner', 'Yes', 'Linux (KDE Plasma)', 'Free', 'Part of KDE Plasma'],
-  ['Rofi', 'Yes', 'Linux (X11; Wayland via forks)', 'Free', 'Highly scriptable, text driven'],
-  ['Spotlight', 'No', 'macOS', 'Included with macOS', 'Built in to the OS'],
-  ['Raycast', 'No', 'macOS (Windows in beta)', 'Free tier plus paid plans', 'Account-based features and a store'],
-  ['Alfred', 'No', 'macOS', 'Free core, paid Powerpack', 'Workflows need the Powerpack'],
-];
 ---
-<Base title="Fudge Launcher: press Alt+Space, type, done">
+<Base title="Fudge: press Alt Space, type, done">
   <section class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <span class="badge">Pre-alpha · free · open source</span>
-        <h1>Press <kbd>Alt</kbd> <kbd>Space</kbd>. Type. <em>Done.</em></h1>
-        <p class="lede">Fudge is a keyboard launcher for Linux and macOS. One box for apps, files, maths, units, time zones, emoji, colours, system commands and window switching. It answers on your machine, and it never phones home.</p>
-        <div class="btn-row">
-          <a class="btn primary" href={GH}>Get the source</a>
-          <a class="btn ghost" href={GH}>★ Star on GitHub</a>
-        </div>
-        <p class="small">Fudge is in development and there are no downloads yet. <a href={`${base}/install/`}>Build it from source</a> if you are curious. The box on this page is a live demo.</p>
-      </div>
-      <Demo />
-    </div>
+    <img class="hero-icon" src={`${base}/icon-256.png`} width="136" height="136" alt="Fudge" data-reveal />
+    <p class="eyebrow" data-reveal>Pre-alpha. Linux and macOS.</p>
+    <h1 data-reveal>Press Alt Space.<br />Type. Done.</h1>
+    <p class="sub" data-reveal>Fudge is a keyboard launcher that answers on your machine and never phones home.</p>
+    <p class="actions" data-reveal>
+      <a class="btn" href={GH}>View on GitHub</a>
+      <a class="more" href={`${base}/install/`}>Build from source</a>
+    </p>
   </section>
 
-  <section class="block free" aria-labelledby="free-h">
-    <div class="wrap">
-      <h2 id="free-h">Free and open source, forever</h2>
-      <p class="lede" style="color:inherit;opacity:.85">Fudge is a hobbyist-friendly, community project, not a business wearing a free tier. There is nothing to buy now and no plan to ever sell it.</p>
-      <div class="grid c3">
-        <div class="card"><h3>MIT or Apache-2.0</h3><p>Pick whichever licence suits you. Read it, fork it, ship it in your distro.</p></div>
-        <div class="card"><h3>No account, no licence key</h3><p>You never sign in to use a launcher. There is no activation step and no server that checks you.</p></div>
-        <div class="card"><h3>No telemetry, no paid tier</h3><p>No analytics, no crash upload. Every feature is in the one free version.</p></div>
-      </div>
-    </div>
+  <section class="stage" aria-label="Live demo">
+    <Demo />
   </section>
 
-  <section class="block" aria-labelledby="try-h">
-    <div class="wrap">
-      <h2 id="try-h">Try typing</h2>
-      <p>Click one and it lands in the demo box above.</p>
-      <div class="try">
-        {tries.map(([q, d]) => (
-          <button type="button" data-q={q}><code>{q}</code><span>{d}</span></button>
-        ))}
-      </div>
-    </div>
+  <section class="band" aria-labelledby="answers-h">
+    <h2 id="answers-h" data-reveal>Answers, not search results.</h2>
+    <p class="sub" data-reveal>Maths, units, currency, time zones, emoji and colours, resolved as you type.</p>
+    <p class="mono" data-reveal>12 * 18 &nbsp; 72 f to c &nbsp; 12 usd to inr<br />time tokyo &nbsp; emoji shrug &nbsp; #3b82f6</p>
   </section>
 
-  <section class="block alt" aria-labelledby="platforms-h">
-    <div class="wrap">
-      <h2 id="platforms-h">Made for Linux, and for macOS too</h2>
-      <p>A native Rust and GTK4 app that keeps its window ready in the background, so the hotkey only has to show it. Target: opens in about 10 ms and uses about 50 MB of memory. Measured numbers will be published with v1.</p>
-      <div class="grid c3">
-        <div class="card"><h3>X11</h3><p>Global hotkey grabbed directly. Window switching via standard EWMH.</p></div>
-        <div class="card"><h3>Wayland</h3><p>Planned support for GNOME, KDE Plasma, Hyprland and Sway, using the GlobalShortcuts portal where available and <code>fudge toggle</code> bound to a key where not. Window switching uses each compositor's own tools.</p></div>
-        <div class="card"><h3>macOS</h3><p>Alt+Space by default, leaving Cmd+Space to Spotlight. Planned: install with Homebrew or a disk image.</p></div>
-      </div>
-      <p class="small" style="margin-top:1rem">Work in progress: the exact state of each backend is tracked in the <a href={`${base}/roadmap/`}>roadmap</a>.</p>
-    </div>
+  <section class="band alt" aria-labelledby="box-h">
+    <h2 id="box-h" data-reveal>Everything on your machine, one box.</h2>
+    <p class="sub" data-reveal>Open apps and files. Switch windows. End a process. Lock the screen.</p>
+    <p class="mono" data-reveal>firefox &nbsp; budget 2026 &nbsp; win code<br />kill spotify &nbsp; kill port 3000 &nbsp; lock</p>
   </section>
 
-  <section class="block" aria-labelledby="privacy-h">
-    <div class="wrap narrow">
-      <h2 id="privacy-h">Nothing you type leaves your machine</h2>
-      <p>This site practises what it preaches: no analytics, no fonts, no scripts from anyone else. Here is the proof, computed by your own browser right now.</p>
-      <Counter />
-      <p>The app's only network call in normal use is a currency-rate lookup, at most once an hour, and you can switch it off. Everything else is on-device. <a href={`${base}/privacy/`}>See every network call Fudge can make</a>.</p>
-    </div>
+  <section class="band" aria-labelledby="private-h">
+    <h2 id="private-h" data-reveal>Private by design.</h2>
+    <div data-reveal><Counter /></div>
+    <p class="sub" data-reveal>Fudge makes one network request: a currency rate lookup, at most once an hour, which you can turn off.</p>
+    <p class="actions" data-reveal><a class="more" href={`${base}/privacy/`}>Read the privacy details</a></p>
   </section>
 
-  <section class="block alt" aria-labelledby="cmp-h">
-    <div class="wrap">
-      <h2 id="cmp-h">How it compares</h2>
-      <p>Other launchers are great, and several are free. This is only a quick map of licence, platforms and price model, checked to the best of our knowledge. Check each project's site for current details.</p>
-      <div class="table-wrap" tabindex="0" role="region" aria-label="Comparison table">
-        <table>
-          <caption class="small" style="text-align:left;padding:.6rem .9rem;caption-side:bottom">Details can change; corrections welcome via GitHub issues.</caption>
-          <thead><tr><th scope="col">Launcher</th><th scope="col">Open source</th><th scope="col">Platforms</th><th scope="col">Price model</th><th scope="col">Note</th></tr></thead>
-          <tbody>
-            {rivals.map(([n, o, p, pr, no]) => (
-              <tr><th scope="row">{n}</th><td class={o.startsWith('Yes') ? 'yes' : ''}>{o}</td><td>{p}</td><td>{pr}</td><td>{no}</td></tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <section class="band alt" aria-labelledby="desktop-h">
+    <h2 id="desktop-h" data-reveal>Made for the desktop you use.</h2>
+    <p class="sub" data-reveal>A native Rust and GTK4 app that stays resident, so the hotkey only has to show it.</p>
+    <dl class="status" data-reveal>
+      <div><dt>Linux, X11</dt><dd>Global hotkey works today.</dd></div>
+      <div><dt>Linux, Wayland</dt><dd>Planned. No global hotkey yet; bind <code>fudge toggle</code> to a key.</dd></div>
+      <div><dt>macOS</dt><dd>Planned. Untested.</dd></div>
+    </dl>
+    <p class="actions" data-reveal><a class="more" href={`${base}/roadmap/`}>See the roadmap</a></p>
   </section>
 
-  <section class="block" aria-labelledby="faq-h">
-    <div class="wrap narrow">
-      <h2 id="faq-h">FAQ</h2>
-      <details><summary>Can I download it?</summary><p>Not yet. Fudge is pre-alpha. You can build it from source today; packages (.deb, AUR, Homebrew and others) are planned. See <a href={`${base}/install/`}>Install</a>.</p></details>
-      <details><summary>Is it really free?</summary><p>Yes. MIT or Apache-2.0, no account, no licence key, no paid tier.</p></details>
-      <details><summary>Are the demo's numbers real?</summary><p>Math, units, time zones, emoji and colours come from the same Rust crate the app uses, compiled to WebAssembly. Currency uses made-up sample rates. App, file, window, kill, search and shell rows are simulated from a fake list.</p></details>
-      <details><summary>Does it work on Wayland?</summary><p>That is the plan: GNOME, KDE Plasma, Hyprland and Sway, with a fallback of binding <code>fudge toggle</code> to a shortcut in your desktop. It is not finished yet.</p></details>
-      <details><summary>What does it send over the network?</summary><p>Only a plain currency-rate request (hourly at most, switchable), an opt-in update check, and plugin downloads you ask for. Web searches open your browser only when you type <code>/online</code> or similar. <a href={`${base}/privacy/`}>Full list</a>.</p></details>
-      <details><summary>Can I write plugins?</summary><p>A plugin protocol over JSON on stdio is planned for v0.3, so you can write plugins in any language. <a href={`${base}/plugins/`}>Draft details</a>.</p></details>
-      <details><summary>How fast and light is it?</summary><p>The target is about 10 ms to open and about 50 MB of memory. We have not measured yet, and will publish numbers with v1.</p></details>
-    </div>
+  <section class="band" aria-labelledby="free-h">
+    <h2 id="free-h" data-reveal>Free. Open source.<br />Forever.</h2>
+    <p class="sub" data-reveal>MIT or Apache-2.0, your choice. No account, no telemetry, no licence key.</p>
+    <p class="actions" data-reveal><a class="more" href={GH}>Read the source on GitHub</a></p>
   </section>
 </Base>

@@ -1,7 +1,6 @@
 ---
-const { size = 32 } = Astro.props;
+// Logo slot: small app icon plus the text wordmark. Swap the image or the
+// wordmark here; the .brand link wrapper lives in layouts/Base.astro.
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
-<svg class="logo" width={size} height={size} viewBox="0 0 64 64" role="img" aria-label="Fudge logo" xmlns="http://www.w3.org/2000/svg">
-  <rect width="64" height="64" rx="16" fill="#3b2216" />
-  <text x="32" y="47" text-anchor="middle" font-family="ui-rounded, 'SF Pro Rounded', Nunito, system-ui, sans-serif" font-weight="800" font-size="46" fill="#f2a43a">f</text>
-</svg>
+<img class="mark" src={`${base}/icon-48.png`} width="22" height="22" alt="" /><span class="wordmark">fudge</span>

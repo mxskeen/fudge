@@ -1,30 +1,32 @@
 ---
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const tries = ['12 * 18', '72 f to c', '12 usd to inr', 'time tokyo', '#3b82f6', 'kill spotify'];
 ---
 <div class="demo-wrap">
   <div class="demo" id="demo" data-wasm={`${base}/wasm/fudge_compute.js`}>
     <div class="demo-input">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-      <input id="demo-q" type="text" role="combobox" aria-expanded="true" aria-controls="demo-list" aria-autocomplete="list" aria-activedescendant="" aria-label="Fudge demo: type a query" placeholder="Type, e.g. 12 * 18" autocomplete="off" autocapitalize="off" spellcheck="false" />
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      <input id="demo-q" type="text" role="combobox" aria-expanded="true" aria-controls="demo-list" aria-autocomplete="list" aria-activedescendant="" aria-label="Fudge demo: type a query" placeholder="Fudge" autocomplete="off" autocapitalize="off" spellcheck="false" />
     </div>
     <ul id="demo-list" class="demo-list" role="listbox" aria-label="Results"></ul>
     <div class="demo-foot">
-      <span id="demo-hint"><kbd>↑</kbd> <kbd>↓</kbd> move · <kbd>Enter</kbd> run · <kbd>Esc</kbd> clear</span>
-      <span id="demo-engine">Starting the answers engine…</span>
+      <span id="demo-hint"><kbd>↑</kbd><kbd>↓</kbd> move <kbd>Enter</kbd> run <kbd>Esc</kbd> clear</span>
+      <span id="demo-engine">Starting the answers engine</span>
     </div>
   </div>
-  <p class="small demo-note">
-    Press <kbd>Alt</kbd>+<kbd>Space</kbd> or <kbd>Ctrl</kbd>+<kbd>K</kbd> to focus the box.
-    <strong>What is real:</strong> math, units, time, emoji and colours are answered by the actual
-    <code>fudge-compute</code> Rust crate compiled to WebAssembly. Currency uses fixed <em>sample rates</em>
-    (no network). Apps, files, windows, kill, web search and shell rows are <strong>simulated in the browser</strong>
-    from a fake list; nothing is launched or run.
+  <p class="demo-tries" aria-label="Example queries">
+    {tries.map((q) => <button type="button" data-q={q}>{q}</button>)}
+  </p>
+  <p class="demo-note">
+    This is a live demo. Math, units, time, emoji and colours are answered by the real engine,
+    compiled to WebAssembly. Currency uses fixed sample rates. Apps, files, windows and shell
+    rows come from a fake list, and nothing is launched.
   </p>
 </div>
 
 <script>
   type Answer = { kind: string; title: string; subtitle: string; copy_text: string; color_hex: string | null };
-  type Row = { id: string; icon: string; title: string; sub: string; tag: string; color?: string; copy?: string; sim?: string };
+  type Row = { id: string; title: string; sub: string; tag: string; color?: string; copy?: string; sim?: string };
 
   const root = document.getElementById('demo')!;
   const input = document.getElementById('demo-q') as HTMLInputElement;
@@ -36,16 +38,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   // Sample rates against USD. Fixed and made up for the demo, not live.
   const SAMPLE_RATES = JSON.stringify({ USD: 1, EUR: 0.92, GBP: 0.79, INR: 83.1, JPY: 151.0, CAD: 1.36, AUD: 1.52, CHF: 0.88, CNY: 7.2, BRL: 5.0 });
 
-  const APPS: [string, string][] = [
-    ['Firefox', '🦊'], ['Files', '📁'], ['Spotify', '🎵'], ['Visual Studio Code', '🧑‍💻'], ['Terminal', '⬛'],
-    ['Settings', '⚙️'], ['Calculator', '🧮'], ['LibreOffice Calc', '📊'], ['GIMP', '🎨'], ['Thunderbird', '✉️'], ['Obsidian', '🗒️'],
-  ];
+  const APPS = ['Firefox', 'Files', 'Spotify', 'Visual Studio Code', 'Terminal', 'Settings', 'Calculator', 'LibreOffice Calc', 'GIMP', 'Thunderbird', 'Obsidian'];
   const FILES = ['budget-2026.ods', 'budget-notes.md', 'budapest-trip.pdf', 'resume-2026.pdf', 'recipes/fudge-brownies.md', 'invoice-0042.pdf', 'photos/beach.jpg'];
   const WINDOWS = ['Firefox: Fudge Launcher', 'Code: main.rs', 'Terminal: ~/code', 'Spotify: Lofi Beats'];
   const PROCS = ['Spotify', 'Firefox', 'Slack', 'Discord'];
   const SEARCH: Record<string, string> = { yt: 'YouTube', gh: 'GitHub', online: 'the web', g: 'the web', so: 'Stack Overflow', w: 'Wikipedia' };
   const SYSTEM = ['lock', 'sleep', 'restart', 'shutdown', 'logout'];
-  const ICON: Record<string, string> = { math: '=', unit: '⇄', currency: '💱', time: '🕒', emoji: '😀', color: '🎨' };
   const TAG: Record<string, string> = { math: 'Math', unit: 'Unit', currency: 'Currency', time: 'Time', emoji: 'Emoji', color: 'Colour' };
 
   let evalJson: ((q: string, now: number, rates: string) => string) | null = null;
@@ -68,7 +66,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const out = JSON.parse(evalJson(q, Date.now(), SAMPLE_RATES)) as Answer[];
       return out.slice(0, 3).map((a, i) => ({
         id: `c${i}`,
-        icon: ICON[a.kind] ?? '•',
         title: a.title,
         sub: a.kind === 'currency' ? a.subtitle.replace(/rates from the internet/, 'sample rates, not live') : a.subtitle,
         tag: TAG[a.kind] ?? a.kind,
@@ -84,45 +81,45 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     let m: RegExpMatchArray | null;
     if (q.startsWith('>')) {
       const cmd = q.slice(1).trim();
-      if (cmd) out.push({ id: 'sh', icon: '>', title: `Run: ${cmd}`, sub: 'Shell command, audit-logged', tag: 'Shell', sim: sim(`the real app would run "${cmd}" in your shell`) });
+      if (cmd) out.push({ id: 'sh', title: `Run: ${cmd}`, sub: 'Shell command, audit-logged', tag: 'Shell', sim: sim(`the real app would run "${cmd}" in your shell`) });
       return out;
     }
     if ((m = q.match(/^\/(\w+)\s+(.+)$/)) && SEARCH[m[1].toLowerCase()]) {
       const where = SEARCH[m[1].toLowerCase()];
-      out.push({ id: 'ws', icon: '🔎', title: `Search ${where} for "${m[2]}"`, sub: 'Opens your browser. Never automatic.', tag: 'Web', sim: sim(`the real app would open your browser at ${where}`) });
+      out.push({ id: 'ws', title: `Search ${where} for "${m[2]}"`, sub: 'Opens your browser. Never automatic.', tag: 'Web', sim: sim(`the real app would open your browser at ${where}`) });
       return out;
     }
     if ((m = q.match(/^kill\s+port\s+(\d{2,5})$/i))) {
-      out.push({ id: 'kp', icon: '☠️', title: `End whatever listens on :${m[1]}`, sub: 'Asks before ending protected processes', tag: 'Kill', sim: sim(`the real app would end the process listening on port ${m[1]}`) });
+      out.push({ id: 'kp', title: `End whatever listens on :${m[1]}`, sub: 'Asks before ending protected processes', tag: 'Kill', sim: sim(`the real app would end the process listening on port ${m[1]}`) });
       return out;
     }
     if ((m = q.match(/^kill\s+(.+)$/i))) {
       for (const p of PROCS.filter((p) => fuzzy(m![1].trim(), p)).slice(0, 3))
-        out.push({ id: `k${p}`, icon: '☠️', title: `End ${p} and its helpers`, sub: 'Process (fake list)', tag: 'Kill', sim: sim(`the real app would end ${p}`) });
+        out.push({ id: `k${p}`, title: `End ${p} and its helpers`, sub: 'Process (fake list)', tag: 'Kill', sim: sim(`the real app would end ${p}`) });
       return out;
     }
     if ((m = q.match(/^win(?:dow)?\s+(.+)$/i))) {
       for (const w of WINDOWS.filter((w) => fuzzy(m![1].trim(), w)).slice(0, 3))
-        out.push({ id: `w${w}`, icon: '🪟', title: w, sub: 'Bring window forward (fake list)', tag: 'Window', sim: sim(`the real app would raise "${w}"`) });
+        out.push({ id: `w${w}`, title: w, sub: 'Bring window forward (fake list)', tag: 'Window', sim: sim(`the real app would raise "${w}"`) });
       return out;
     }
     const lq = q.toLowerCase();
     for (const s of SYSTEM.filter((s) => s.startsWith(lq) && lq.length >= 2))
-      out.push({ id: `s${s}`, icon: '⏻', title: cap(s), sub: s === 'lock' ? 'Lock the screen' : 'Asks first, it cannot be undone', tag: 'System', sim: sim(`the real app would ${s} your computer`) });
+      out.push({ id: `s${s}`, title: cap(s), sub: s === 'lock' ? 'Lock the screen' : 'Asks first, it cannot be undone', tag: 'System', sim: sim(`the real app would ${s} your computer`) });
     if (lq.length >= 2 && !/[\d=+*/^%()]/.test(lq)) {
-      for (const [n, ic] of APPS.filter(([n]) => fuzzy(lq, n)).slice(0, 4))
-        out.push({ id: `a${n}`, icon: ic, title: n, sub: 'Application (fake list)', tag: 'App', sim: sim(`the real app would launch ${n}`) });
+      for (const n of APPS.filter((n) => fuzzy(lq, n)).slice(0, 4))
+        out.push({ id: `a${n}`, title: n, sub: 'Application (fake list)', tag: 'App', sim: sim(`the real app would launch ${n}`) });
       for (const f of FILES.filter((f) => fuzzy(lq, f)).slice(0, 3))
-        out.push({ id: `f${f}`, icon: '📄', title: f.split('/').pop()!, sub: `~/${f} (fake list)`, tag: 'File', sim: sim(`the real app would open ${f}`) });
+        out.push({ id: `f${f}`, title: f.split('/').pop()!, sub: `~/${f} (fake list)`, tag: 'File', sim: sim(`the real app would open ${f}`) });
     }
     return out;
   }
 
   function recents(): Row[] {
     return [
-      { id: 'r1', icon: '🦊', title: 'Firefox', sub: 'Application (fake list)', tag: 'App', sim: 'Simulated: the real app would launch Firefox.' },
-      { id: 'r2', icon: '📄', title: 'budget-2026.ods', sub: '~/budget-2026.ods (fake list)', tag: 'File', sim: 'Simulated: the real app would open the file.' },
-      { id: 'r3', icon: '🎵', title: 'Spotify', sub: 'Application (fake list)', tag: 'App', sim: 'Simulated: the real app would launch Spotify.' },
+      { id: 'r1', title: 'Firefox', sub: 'Application (fake list)', tag: 'App', sim: 'Simulated: the real app would launch Firefox.' },
+      { id: 'r2', title: 'budget-2026.ods', sub: '~/budget-2026.ods (fake list)', tag: 'File', sim: 'Simulated: the real app would open the file.' },
+      { id: 'r3', title: 'Spotify', sub: 'Application (fake list)', tag: 'App', sim: 'Simulated: the real app would launch Spotify.' },
     ];
   }
 
@@ -132,7 +129,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     if (!q) {
       const h = document.createElement('li');
       h.className = 'demo-empty'; h.setAttribute('role', 'presentation');
-      h.textContent = 'Recent (simulated). Type something, or pick an example below.';
+      h.textContent = 'Recent';
       list.append(h);
     }
     if (q && !rows.length) {
@@ -148,9 +145,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       li.setAttribute('role', 'option');
       li.setAttribute('aria-selected', String(i === sel));
       if (r.color) { const sw = document.createElement('span'); sw.className = 'sw'; sw.style.background = r.color; sw.setAttribute('aria-hidden', 'true'); li.append(sw); }
-      else { const ic = document.createElement('span'); ic.className = 'ic'; ic.textContent = r.icon; ic.setAttribute('aria-hidden', 'true'); li.append(ic); }
       const tx = document.createElement('span'); tx.className = 'tx';
-      const t = document.createElement('span'); t.className = 't'; t.textContent = r.title;
+      const t = document.createElement('span'); t.className = r.tag === 'Math' ? 't big' : 't'; t.textContent = r.title;
       const s = document.createElement('span'); s.className = 's'; s.textContent = r.sub;
       tx.append(t, s);
       const k = document.createElement('span'); k.className = 'k'; k.textContent = r.tag;
@@ -218,6 +214,25 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     root.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   });
 
+  // Gentle first-view typing. Stops on any key, click or touch.
+  const SAMPLE = '12 * 18';
+  let typingTimer = 0, typed = false;
+  function stopTyping() { clearTimeout(typingTimer); typed = true; }
+  ['keydown', 'pointerdown', 'touchstart'].forEach((ev) => window.addEventListener(ev, stopTyping, { passive: true }));
+  input.addEventListener('focus', () => { if (input.value === SAMPLE.slice(0, input.value.length) && input.value) input.select(); });
+  function typeSample(i = 0) {
+    if (typed || input.value && i === 0) return;
+    input.value = SAMPLE.slice(0, i);
+    update();
+    if (i < SAMPLE.length) typingTimer = window.setTimeout(() => typeSample(i + 1), 170);
+  }
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((es) => {
+      if (es.some((e) => e.isIntersecting)) { io.disconnect(); typingTimer = window.setTimeout(() => typeSample(), 700); }
+    }, { threshold: 0.6 });
+    io.observe(root);
+  }
+
   update();
 
   async function loadEngine() {
@@ -226,10 +241,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       const mod = await import(/* @vite-ignore */ url);
       await mod.default({ module_or_path: url.replace(/fudge_compute\.js$/, 'fudge_compute_bg.wasm') });
       evalJson = mod.evaluate_json;
-      engineEl.textContent = 'Answers: real fudge-compute (WebAssembly) · other rows: simulated';
+      engineEl.textContent = 'Answers by fudge-compute, running in WebAssembly';
       if (input.value.trim()) update();
     } catch {
-      engineEl.textContent = 'Answers engine failed to load: only simulated rows available';
+      engineEl.textContent = 'Answers engine failed to load';
     }
   }
   loadEngine();

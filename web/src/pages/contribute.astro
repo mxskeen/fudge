@@ -3,36 +3,35 @@ import Base from '../layouts/Base.astro';
 const GH = 'https://github.com/mxskeen/fudge';
 const crates = [
   ['fudge-core', 'Query, result and action types, the provider trait, ranking, history, config.'],
-  ['fudge-compute', 'The answers engine: calc, units, currency, time, emoji, colours. No I/O, and it compiles to WebAssembly (that is what powers the demo on this site).'],
-  ['fudge-providers', 'Apps, files, windows, system commands, web search, shell and more.'],
-  ['fudge-platform', 'Per-OS glue: hotkeys, window listing and focus, lock and sleep, open.'],
+  ['fudge-compute', 'The answers engine. No I/O. It compiles to WebAssembly, which powers the demo on this site.'],
+  ['fudge-providers', 'Apps, files, windows, system commands, web search, shell.'],
+  ['fudge-platform', 'Per-OS glue: hotkeys, window listing and focus, lock and sleep.'],
   ['apps/fudge', 'The GTK4 and libadwaita app, daemon and CLI.'],
 ];
 const ideas = [
   'Add unit conversions or currency aliases to fudge-compute, with a golden test.',
-  'Add city names to the time-zone table.',
-  'Write a .desktop file or Wayland shortcut recipe for your desktop environment.',
+  'Add city names to the time zone table.',
+  'Write a .desktop file or Wayland shortcut recipe for your desktop.',
   'Test the build on your distro and improve the dependency list.',
   'Report which Wayland compositor features work for you.',
-  'Improve this website, or the docs.',
+  'Improve this website or the docs.',
 ];
 ---
-<Base title="Contribute to Fudge Launcher">
-  <div class="page"><div class="wrap narrow">
+<Base title="Contribute: Fudge">
+  <article class="page">
     <h1>Contribute</h1>
-    <p>Fudge is MIT or Apache-2.0 and built in the open at <a href={GH}>github.com/mxskeen/fudge</a>. Contributions are licensed the same way.</p>
+    <p class="lead">Fudge is built in the open at <a href={GH}>github.com/mxskeen/fudge</a>. Contributions are licensed MIT or Apache-2.0.</p>
     <h2>Build and test</h2>
 <pre><code>git clone {GH}.git
 cd fudge
 cargo build --release
 cargo test --workspace</code></pre>
-    <p>System packages for the GTK app are listed on the <a href="../install/">install page</a>. The answers engine and most logic tests need only Rust.</p>
+    <p>System packages for the GTK app are on the <a href="../install/">install page</a>. The answers engine and most logic tests need only Rust.</p>
     <h2>Code layout</h2>
-    <ul>{crates.map(([n, d]) => <li><code>{n}</code>: {d}</li>)}</ul>
-    <p>Planned later: an indexer crate, a plugin host crate and a settings app.</p>
-    <h2>Good first issues, ideas</h2>
+    <ul>{crates.map(([n, d]) => <li><code>{n}</code> {d}</li>)}</ul>
+    <h2>Where to start</h2>
     <ul>{ideas.map((i) => <li>{i}</li>)}</ul>
     <h2>This website</h2>
-    <p>The site lives in <code>web/</code> (Astro, plain CSS). See <code>web/README.md</code>. To rebuild the demo's WebAssembly, run <code>web/scripts/build-wasm.sh</code>.</p>
-  </div></div>
+    <p>It lives in <code>web/</code>, built with Astro and plain CSS. To rebuild the demo's WebAssembly, run <code>web/scripts/build-wasm.sh</code>.</p>
+  </article>
 </Base>

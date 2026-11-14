@@ -1,35 +1,34 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-<Base title="Writing a Fudge plugin (planned)" description="The planned JSON-over-stdio plugin protocol for Fudge Launcher, with a Python example. Planned for v0.3.">
-  <div class="page"><div class="wrap narrow">
-    <h1>Plugins <span class="planned">planned for v0.3</span></h1>
-    <p class="status"><strong>This is a design, not a shipped feature.</strong> Fudge is pre-alpha and the plugin host does not exist yet. The protocol below follows the project plan and may change before v0.3. Nothing here can be run today.</p>
+<Base title="Plugins: Fudge" description="The planned JSON-over-stdio plugin protocol for Fudge. Planned for v0.3.">
+  <article class="page">
+    <h1>Plugins</h1>
+    <p class="lead">Planned for v0.3. This is a design, not a shipped feature, and nothing here runs today.</p>
 
     <h2>The idea</h2>
-    <p>A plugin is a program, in any language, that talks JSON over stdin and stdout. Fudge's own built-in features use the same provider interface internally, so external plugins are meant to be first-class.</p>
+    <p>A plugin is a program, in any language, that exchanges JSON over stdin and stdout. Fudge's built-in features use the same provider interface, so plugins are meant to be first class.</p>
 
     <h2>Layout</h2>
-    <p>Each plugin lives in its own folder with a manifest:</p>
+    <p>Each plugin lives in its own folder with a manifest.</p>
 <pre><code>~/.local/share/fudge/plugins/&lt;id&gt;/plugin.toml</code></pre>
-    <p>The manifest holds the plugin's <code>id</code>, the <code>keyword</code> that triggers it, the <code>exec</code> command to start it, and its <code>version</code>.</p>
 <pre><code>id      = "hello"
 keyword = "hi"
 exec    = "python3 plugin.py"
 version = "0.1.0"</code></pre>
 
-    <h2>The protocol</h2>
+    <h2>Protocol</h2>
     <ol>
-      <li>Fudge starts your program the first time its keyword is typed and keeps it running.</li>
-      <li>For each query it writes one JSON message per line to your stdin, such as <code>{`{"method":"query","params":{"text":"hi bob"}}`}</code>.</li>
-      <li>You reply with one JSON line containing a list of results. Each result has a title, a subtitle and an action. Actions in the plan are <code>open</code>, <code>copy</code>, <code>run</code> and <code>paste</code>.</li>
-      <li>The host applies timeouts, so slow plugins cannot freeze the box.</li>
+      <li>Fudge starts your program the first time its keyword is typed, and keeps it running.</li>
+      <li>For each query, it writes one JSON line to stdin, such as <code>{`{"method":"query","params":{"text":"hi bob"}}`}</code>.</li>
+      <li>You reply with one JSON line holding a list of results. Each has a title, a subtitle and an action: <code>open</code>, <code>copy</code>, <code>run</code> or <code>paste</code>.</li>
+      <li>The host enforces timeouts, so a slow plugin cannot freeze the box.</li>
     </ol>
-    <p>The exact field names for replies are not final. The example uses a plausible shape.</p>
+    <p>Field names are not final.</p>
 
-    <h2>A 20-line Python plugin <span class="planned">planned for v0.3</span></h2>
+    <h2>Example</h2>
+    <p>A draft Python plugin that replies with a greeting and copies it on Enter.</p>
 <pre><code>#!/usr/bin/env python3
-# Draft example: replies "Hello, NAME" and copies it on Enter.
 import json, sys
 
 for line in sys.stdin:
@@ -40,14 +39,14 @@ for line in sys.stdin:
     name = text.removeprefix("hi").strip() or "world"
     reply = &#123;
         "results": [&#123;
-            "title": f"Hello, &#123;name&#125;!",
+            "title": f"Hello, &#123;name&#125;",
             "subtitle": "Press Enter to copy",
-            "action": &#123;"type": "copy", "text": f"Hello, &#123;name&#125;!"&#125;,
+            "action": &#123;"type": "copy", "text": f"Hello, &#123;name&#125;"&#125;,
         &#125;]
     &#125;
     print(json.dumps(reply), flush=True)</code></pre>
 
-    <h2>Registry <span class="planned">planned</span></h2>
-    <p>The plan is a git-backed registry: a GitHub repository with an <code>index.json</code> signed with minisign, verified by the app before anything is installed. Plugin downloads happen only when you browse or install, as listed in the <a href="../privacy/">privacy page</a>.</p>
-  </div></div>
+    <h2>Registry</h2>
+    <p>Planned as a git-backed registry: a GitHub repository with an <code>index.json</code> signed with minisign, verified before anything installs. Downloads happen only when you browse or install, as the <a href="../privacy/">privacy page</a> lists.</p>
+  </article>
 </Base>

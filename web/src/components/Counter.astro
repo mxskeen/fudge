@@ -1,8 +1,8 @@
 <div class="counter" aria-live="polite">
-  <strong id="net-count">0</strong>
-  <span>network requests made by this page to other websites</span>
+  <p class="counter-n" id="net-count">0</p>
+  <p class="counter-l">network requests made by this page to other sites</p>
 </div>
-<p class="small" id="net-detail">Counting live in your browser with the Performance API: every resource this page loaded, minus the ones from its own origin.</p>
+<p class="fine" id="net-detail">Counted live in your browser with the Performance API.</p>
 <script>
   const out = document.getElementById('net-count')!;
   const detail = document.getElementById('net-detail')!;
@@ -17,12 +17,11 @@
       seen.add(e.name);
     }
     out.textContent = String(seen.size);
-    detail.textContent = `Counting live in your browser with the Performance API. This page has loaded ${own} file${own === 1 ? '' : 's'} from its own server (including the demo's WebAssembly) and ${seen.size} from anywhere else.`;
+    detail.textContent = `Counted live with the Performance API: ${own} file${own === 1 ? '' : 's'} from this site, ${seen.size} from anywhere else.`;
   }
   scan(performance.getEntriesByType('resource'));
   try {
     new PerformanceObserver((l) => scan(l.getEntries())).observe({ type: 'resource', buffered: false });
-  } catch { /* older browsers: the one-off scan above still ran */ }
-  // The observer only sees new entries, so recount everything once things settle.
+  } catch { /* the one-off scan above still ran */ }
   window.addEventListener('load', () => { own = 0; seen.clear(); setTimeout(() => scan(performance.getEntriesByType('resource')), 800); });
 </script>
