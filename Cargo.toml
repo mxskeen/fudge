@@ -1,0 +1,38 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/fudge-compute",
+    "crates/fudge-core",
+    "crates/fudge-platform",
+    "crates/fudge-providers",
+    "apps/fudge",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/fudge-launcher/fudge"
+rust-version = "1.80"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+anyhow = "1"
+thiserror = "1"
+chrono = "0.4"
+chrono-tz = "0.10"
+log = "0.4"
+env_logger = "0.11"
+dirs = "5"
+fudge-compute = { path = "crates/fudge-compute" }
+fudge-core = { path = "crates/fudge-core" }
+fudge-platform = { path = "crates/fudge-platform" }
+fudge-providers = { path = "crates/fudge-providers" }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true
+opt-level = 3
