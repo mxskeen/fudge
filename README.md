@@ -7,6 +7,7 @@
 A fast, private keyboard launcher for Linux and macOS. Press Alt+Space, type, get the answer.
 
 Fudge is free and open source under MIT or Apache-2.0. It has no account, no telemetry and no licence key.
+
 {Fudge was my experiment with new claude models, not sure if i will maintain this. feel free to fork/change this repo. thanks}
 
 **Status: pre-alpha.** The core works on Linux (X11, tested on GNOME). Wayland is not finished and macOS is untested. Linux x86_64 builds are on the [Releases](https://github.com/mxskeen/fudge/releases) page.
