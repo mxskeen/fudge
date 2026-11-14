@@ -23,3 +23,13 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev libadwaita-1-dev libsqlite3-dev libx11-dev libxcb1-dev
       - run: cargo clippy --workspace --all-targets
       - run: cargo test --workspace
+  macos-app:
+    name: app builds on macOS
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: brew install gtk4 libadwaita pkg-config
+      - run: cargo build --release -p fudge
+      - run: ./target/release/fudge --version
+      - run: ./target/release/fudge query "12 * 18"
