@@ -4,3 +4,4 @@ web/dist/
 web/.astro/
 *.swp
 .DS_Store
+/dist/
