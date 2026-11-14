@@ -1,0 +1,27 @@
+[package]
+name = "fudge-compute"
+description = "Pure, I/O-free answers engine for Fudge Launcher (math, units, currency, time, emoji, colors)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[lib]
+crate-type = ["rlib", "cdylib"]
+
+[dependencies]
+serde = { workspace = true }
+chrono = { workspace = true, default-features = false, features = ["std"] }
+chrono-tz = { workspace = true }
+emojis = "0.9"
+thiserror = { workspace = true }
+wasm-bindgen = { version = "0.2", optional = true }
+serde_json = { workspace = true, optional = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }
+
+[features]
+default = []
+wasm = ["dep:wasm-bindgen", "dep:serde_json"]
