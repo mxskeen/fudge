@@ -1,46 +1,77 @@
 # fudge
 
-**Press Alt+Space. Type. Get the answer.**
+A fast, private keyboard launcher for Linux and macOS. Press Alt+Space, type, get the answer.
 
-Fudge is a fast, private, open-source keyboard launcher for Linux and macOS. One box for apps, files, math, units, currency, time zones, emoji, colours, system commands, window switching and web searches you ask for.
+Fudge is free and open source under MIT or Apache-2.0. It has no account, no telemetry and no licence key.
 
-- **Fast.** It's a native Rust + GTK4 app that stays running with its window already built, so Alt+Space only has to show it.
-- **Private.** No account, no telemetry. Nothing you type leaves your machine. See [PRIVACY.md](PRIVACY.md).
-- **Free.** MIT or Apache-2.0, your choice. Plugins can be written in any language.
+**Status: pre-alpha.** The core works on Linux (X11, tested on GNOME). Wayland, macOS and packaging are not finished. There are no releases yet.
 
-## What you can type
+## What it does
 
-| You type | You get |
+| Type | Result |
 |---|---|
-| `fire` | Firefox · App |
-| `budget` | budget-2026.ods · file |
-| `12 * 18` | = 216 |
-| `72 f to c` | = 22.222222 °C |
-| `12 usd to inr` | INR at today's rate (the only online answer) |
-| `time tokyo` | Tokyo's time, day and UTC offset |
-| `emoji shrug` | 🤷 copied |
-| `#3b82f6` | colour swatch, rgb() and hsl() |
-| `kill spotify` | ends Spotify and its helpers |
-| `kill port 3000` | ends whatever listens on :3000 |
-| `lock` / `sleep` / `restart` | does that (asks first when it can't be undone) |
-| `win code` | brings the VS Code window forward |
-| `/online rust lifetimes` | opens your browser; never automatic |
-| `> htop` | runs a shell command |
+| `fire` | Launch Firefox |
+| `budget` | Find files by name |
+| `12 * 18` | `= 216` |
+| `72 f to c` | `= 22.222222 °C` |
+| `12 usd to inr` | Currency conversion (the only feature that uses the network) |
+| `time tokyo` | Time in another city |
+| `emoji shrug` | Copy an emoji |
+| `#3b82f6` | Colour preview and conversions |
+| `kill spotify`, `kill port 3000` | End a process or whatever holds a port |
+| `lock`, `sleep`, `restart` | System commands (destructive ones ask first) |
+| `win code` | Switch to a window |
+| `/yt lofi`, `/gh rust` | Web search, only when you ask |
+| `> htop` | Run a shell command |
 
-## Status
+## Build
 
-Pre-alpha. Roadmap in [docs/PLAN.md](docs/PLAN.md).
-
-## Building
+Requires Rust 1.80 or newer.
 
 ```sh
-# Debian/Ubuntu
+# Debian / Ubuntu
 sudo apt install build-essential pkg-config libgtk-4-dev libadwaita-1-dev \
-  libgtk4-layer-shell-dev libsqlite3-dev libx11-dev libxcb1-dev
+  libsqlite3-dev libx11-dev libxcb1-dev
+
 cargo build --release
-./target/release/fudge          # start the daemon
-./target/release/fudge toggle   # show/hide (bind this to a key on Wayland)
-./target/release/fudge query "72 f to c" --json
+./target/release/fudge daemon
 ```
 
-macOS: `brew install gtk4 libadwaita pkg-config`, then `cargo build --release`.
+On macOS, install `gtk4`, `libadwaita` and `pkg-config` with Homebrew. The macOS code compiles only on a Mac and has not been tested.
+
+## Use
+
+```sh
+fudge daemon              # start the resident launcher
+fudge toggle              # show or hide it
+fudge query "72 f to c"   # run a query without the UI (add --json for JSON)
+fudge install-autostart   # start on login
+fudge install-shortcut    # bind Alt+Space on GNOME
+```
+
+On X11, Alt+Space is grabbed directly. On Wayland there is no global grab yet: bind `fudge toggle` to a key in your desktop settings.
+
+## Layout
+
+| Path | Purpose |
+|---|---|
+| `crates/fudge-compute` | Math, units, currency, time zones, emoji, colour. No I/O; also builds to WebAssembly |
+| `crates/fudge-core` | Query, result and action types, ranking, history, config |
+| `crates/fudge-platform` | Linux and macOS system glue |
+| `crates/fudge-providers` | Apps, files, windows, kill, system, web search, shell |
+| `apps/fudge` | GTK4 window, daemon and CLI |
+| `web` | Project website (Astro) |
+
+Run the tests with `cargo test --workspace`.
+
+## Privacy
+
+Nothing you type leaves your machine. The only network call is the currency rate lookup, at most once an hour, and it can be turned off. Every call is listed in [PRIVACY.md](PRIVACY.md).
+
+## Roadmap
+
+See [docs/PLAN.md](docs/PLAN.md). Planned next: Wayland window switching, a plugin API, clipboard history, snippets and packages.
+
+## Licence
+
+MIT or Apache-2.0, at your option. See [LICENSE-MIT](LICENSE-MIT) and [LICENSE-APACHE](LICENSE-APACHE).
