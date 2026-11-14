@@ -1,0 +1,24 @@
+[package]
+name = "fudge-providers"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+description = "Built-in search providers for Fudge Launcher"
+
+[dependencies]
+fudge-core.workspace = true
+fudge-compute.workspace = true
+fudge-platform.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true
+chrono.workspace = true
+log.workspace = true
+dirs.workspace = true
+ureq = { version = "2", features = ["json"] }
+sysinfo = "0.32"
+walkdir = "2"
+notify = "6"
+mime_guess = "2"
+urlencoding = "2"
