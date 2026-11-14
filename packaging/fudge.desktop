@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Fudge Launcher
+GenericName=Application Launcher
+Comment=Fast Alt+Space launcher for apps, files and quick answers
+Exec=fudge daemon
+Icon=fudge
+Terminal=false
+NoDisplay=false
+Categories=Utility;
+Keywords=launcher;search;calculator;
