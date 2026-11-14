@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+const ms = [
+  ['M0', 'Foundations', 'Workspace, CI (Linux and macOS build, test, clippy), licences, contributing guide, privacy policy.', 'Done in the repository'],
+  ['M1', 'Daemon and window', 'Resident daemon with a pre-built GTK window, hotkey on X11, Wayland portal and macOS, apps provider, frecency ranking. Measure open latency.', 'In progress'],
+  ['M2', 'Answers engine', 'Math, units, currency, time, emoji and colours, with golden tests.', 'Written, being polished'],
+  ['M3', 'Files, folders, search, shell', 'Own file indexer plus OS content search, quick folders, web search on request, shell commands.', 'Planned'],
+  ['M4', 'System and windows', 'Lock, sleep, restart, kill and kill port, settings panels, window switching on X11, KDE, Hyprland, Sway, GNOME (via a small extension) and macOS.', 'Planned'],
+  ['M5', 'Settings and plugins', 'Settings app, styles, plugin host, example plugins, signed registry. The plugin protocol is planned for v0.3.', 'Planned'],
+  ['M6', 'Packaging and v1.0', 'Packages, this website, measured performance numbers, and the 1.0 release.', 'Planned'],
+];
+const post = [
+  ['Clipboard history', 'Encrypted, with a skip list for password managers, pins and transforms.'],
+  ['Snippets', 'Short triggers like ;sig, with {date} and {cursor} placeholders and import from Raycast.'],
+  ['Connectors', 'Quick commands for music players (MPRIS or AppleScript), notes, editors and game libraries.'],
+  ['Plugin registry browser', 'Browse and install community plugins from inside the app.'],
+  ['Screen recording and editor', 'A later, optional extra.'],
+];
+---
+<Base title="Roadmap: Fudge Launcher" description="Milestones for Fudge Launcher, from workspace to v1.0, and what comes after.">
+  <div class="page"><div class="wrap narrow">
+    <h1>Roadmap</h1>
+    <p class="status">Pre-alpha. This is the plan, not a promise of dates. Status labels are best effort and may lag the repository.</p>
+    <h2>Toward v1.0</h2>
+    <ul class="timeline">
+      {ms.map(([id, t, d, s]) => (<li><span class="tag">{id} · {s}</span><h3>{t}</h3><p>{d}</p></li>))}
+    </ul>
+    <h2>After v1</h2>
+    <ul class="timeline">
+      {post.map(([t, d]) => (<li><span class="tag">Post-v1 <span class="planned">planned</span></span><h3>{t}</h3><p>{d}</p></li>))}
+    </ul>
+  </div></div>
+</Base>

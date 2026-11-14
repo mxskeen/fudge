@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+const GH = 'https://github.com/fudge-launcher/fudge';
+const pk = [
+  ['.deb (Debian, Ubuntu)'], ['.rpm (Fedora)'], ['AUR (Arch)'], ['Nix flake'], ['AppImage'], ['Homebrew cask (macOS)'], ['.dmg (macOS)'],
+];
+---
+<Base title="Install Fudge Launcher" description="Build Fudge Launcher from source on Linux or macOS. Packages are planned.">
+  <div class="page"><div class="wrap narrow">
+    <h1>Install</h1>
+    <p class="status"><strong>Pre-alpha.</strong> There are no release downloads yet. Today the way to try Fudge is to build it from source. Everything marked <span class="planned">planned</span> does not exist yet.</p>
+
+    <h2>Build from source</h2>
+    <p><a href={GH}>Get the source</a> from GitHub, then on Debian or Ubuntu install the build dependencies:</p>
+<pre><code>sudo apt install build-essential pkg-config libgtk-4-dev libadwaita-1-dev \
+  libgtk4-layer-shell-dev libsqlite3-dev libx11-dev libxcb1-dev
+git clone {GH}.git
+cd fudge
+cargo build --release</code></pre>
+    <p>Run it:</p>
+<pre><code>./target/release/fudge          # start the daemon
+./target/release/fudge toggle   # show/hide (bind this to a key on Wayland)
+./target/release/fudge query "72 f to c" --json</code></pre>
+    <h3>macOS</h3>
+<pre><code>brew install gtk4 libadwaita pkg-config
+cargo build --release</code></pre>
+    <p>You need a recent stable Rust toolchain from rustup (rustup.rs). This is how the README describes the build; if something differs on your system, please open an issue.</p>
+
+    <h2>Packages <span class="planned">planned</span></h2>
+    <p>None of these are available yet.</p>
+    <ul>{pk.map(([n]) => <li>{n} <span class="planned">planned</span></li>)}</ul>
+    <p>Flatpak is deliberately deferred: its sandbox blocks ending processes, window control and launching apps without heavy workarounds.</p>
+
+    <h2>The hotkey</h2>
+    <p>The default is <kbd>Alt</kbd>+<kbd>Space</kbd>, configurable. How it is grabbed depends on where you run it (planned design, see the <a href="../roadmap/">roadmap</a> for what exists):</p>
+    <ul>
+      <li><strong>X11:</strong> grabbed directly.</li>
+      <li><strong>Wayland:</strong> the XDG GlobalShortcuts portal (KDE, Hyprland, GNOME 48+). Otherwise bind <code>fudge toggle</code> as a custom keyboard shortcut in your desktop. On GNOME the installer is planned to offer to add it.</li>
+      <li><strong>macOS:</strong> a global hotkey, Alt+Space, leaving Cmd+Space to Spotlight.</li>
+    </ul>
+    <p>Hyprland and Sway users can bind it in their config, for example <code>bind = ALT, SPACE, exec, fudge toggle</code> for Hyprland or <code>bindsym Mod1+space exec fudge toggle</code> for Sway.</p>
+
+    <h2>Uninstall</h2>
+    <p>Delete the binary and the data folders listed in the <a href="../privacy/">privacy page</a>.</p>
+  </div></div>
+</Base>
