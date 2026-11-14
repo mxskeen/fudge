@@ -1,4 +1,4 @@
-First public pre-alpha of Fudge, a fast, private keyboard launcher.
+Pre-alpha of Fudge, a fast, private keyboard launcher. Linux x86_64 and an untested macOS Apple Silicon build.
 
 ## Install (Linux x86_64)
 
@@ -9,9 +9,19 @@ sudo apt install ./fudge_*_amd64.deb
 fudge daemon
 ```
 
-Any other distribution: unpack the tarball and run `./install.sh` (installs to `~/.local`), then `fudge daemon`.
+Any other Linux distribution: unpack the tarball and run `./install.sh` (installs to `~/.local`), then `fudge daemon`.
 
 Press Alt+Space to open it. Run `fudge install-autostart` to start it at login.
+
+## macOS (untested)
+
+An Apple Silicon build is attached. It compiles and the query engine runs on a macOS CI runner, but nobody has tried the launcher window, the global hotkey or window switching on a real Mac. It is not signed or notarized. Feel free to try it, and please report what works or breaks in an [issue](https://github.com/mxskeen/fudge/issues).
+
+```sh
+brew install gtk4 libadwaita
+tar xzf fudge-*-macos-arm64.tar.gz && cd fudge-*-macos-arm64 && ./install.sh
+fudge daemon
+```
 
 ## What works
 
@@ -20,7 +30,7 @@ Apps, files, math, units, currency, time zones, emoji, colours, kill, system com
 ## Known limits
 
 - Wayland has no global hotkey yet: bind `fudge toggle` to a key in your desktop settings. Window switching on GNOME and KDE Wayland is not done.
-- macOS is not packaged and the macOS code is untested.
+- macOS is untested (see above). Intel Macs have no build yet.
 - Idle memory is about 215 MB, far above the target. This is being worked on.
 - File content search and plugins are not implemented yet.
 

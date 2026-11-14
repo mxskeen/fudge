@@ -8,7 +8,7 @@ A fast, private keyboard launcher for Linux and macOS. Press Alt+Space, type, ge
 
 Fudge is free and open source under MIT or Apache-2.0. It has no account, no telemetry and no licence key.
 
-**Status: pre-alpha.** The core works on Linux (X11, tested on GNOME). Wayland and macOS are not finished. Linux x86_64 builds are on the [Releases](https://github.com/mxskeen/fudge/releases) page.
+**Status: pre-alpha.** The core works on Linux (X11, tested on GNOME). Wayland is not finished and macOS is untested. Linux x86_64 builds are on the [Releases](https://github.com/mxskeen/fudge/releases) page.
 
 ## What it does
 
@@ -30,7 +30,7 @@ Fudge is free and open source under MIT or Apache-2.0. It has no account, no tel
 
 ## Install
 
-Download the latest build from [Releases](https://github.com/mxskeen/fudge/releases). Linux x86_64 only for now.
+Download the latest build from [Releases](https://github.com/mxskeen/fudge/releases). Linux x86_64 and macOS Apple Silicon (untested).
 
 ```sh
 # Debian, Ubuntu and derivatives (24.04 or newer)
@@ -38,7 +38,15 @@ sudo apt install ./fudge_*_amd64.deb
 fudge daemon
 ```
 
-Other distributions: unpack `fudge-*-linux-x86_64.tar.gz` and run `./install.sh`, which installs to `~/.local`. Press Alt+Space to open the launcher. Run `fudge install-autostart` to start it at login.
+Other Linux distributions: unpack `fudge-*-linux-x86_64.tar.gz` and run `./install.sh`, which installs to `~/.local`. Press Alt+Space to open the launcher. Run `fudge install-autostart` to start it at login.
+
+macOS (Apple Silicon, **untested**): the build compiles and the query engine runs in CI, but the launcher window, hotkey and window switching have not been tried on a real Mac. Try it and [open an issue](https://github.com/mxskeen/fudge/issues) with what you find.
+
+```sh
+brew install gtk4 libadwaita
+tar xzf fudge-*-macos-arm64.tar.gz && cd fudge-*-macos-arm64 && ./install.sh
+fudge daemon
+```
 
 ## Build from source
 
@@ -53,7 +61,7 @@ cargo build --release
 ./target/release/fudge daemon
 ```
 
-On macOS, install `gtk4`, `libadwaita` and `pkg-config` with Homebrew. The macOS code compiles only on a Mac and has not been tested.
+On macOS, install `gtk4`, `libadwaita` and `pkg-config` with Homebrew. It builds in CI but has not been tested on a real Mac.
 
 ## Use
 
