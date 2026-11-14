@@ -1,4 +1,8 @@
-# fudge
+<p align="center">
+  <img src="branding/fudge-icon-256.png" alt="Fudge logo" width="128" height="128">
+</p>
+
+<h1 align="center">fudge</h1>
 
 A fast, private keyboard launcher for Linux and macOS. Press Alt+Space, type, get the answer.
 
