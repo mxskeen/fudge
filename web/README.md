@@ -4,7 +4,7 @@ Static site built with Astro, TypeScript and plain CSS. No UI framework, no thir
 
 ```sh
 npm install
-npm run dev       # http://localhost:4321
+npm run dev       # http://localhost:4321/fudge/
 npm run build     # static output in dist/
 npm run preview   # serve dist/
 ```
@@ -22,10 +22,18 @@ Currency uses fixed sample rates; app/file/window/kill/search/shell rows are sim
 
 ## Deploying (GitHub Pages)
 
-Set `SITE` and `BASE` at build time. For a project site at `https://fudge-launcher.github.io/fudge/`:
+The defaults in `astro.config.mjs` target `https://mxskeen.github.io/fudge/`:
 
 ```sh
-SITE=https://fudge-launcher.github.io BASE=/fudge npm run build
+npm run build
 ```
 
-Upload `dist/` with `actions/upload-pages-artifact`. For a custom domain or root site leave `BASE` unset.
+Upload `dist/` with `actions/upload-pages-artifact`. For a custom domain or a root site, override both values:
+
+```sh
+SITE=https://example.com BASE=/ npm run build
+```
+
+## Branding
+
+The logo lives in `../branding/`. The site uses copies in `public/` (favicons, touch icon, `og.png`). The in-page mark is `src/components/Logo.astro`.
